@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Expense Tracker</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <!-- User Info Section -->
+    <div class="user-info">
+      <p>Welcome, <span id="username-display">User</span></p>
+      <button onclick="logout()">Logout</button>
+    </div>
+
+    <!-- App Header -->
+    <div class="app-header">
+      <i class="fas fa-wallet"></i>
+      <h1>Expense Tracker</h1>
+    </div>
+
+    <!-- Header Section: Current Date -->
+    <div class="header-section">
+      <div class="current-date">
+        <p><strong>Date:</strong> <span id="current-date"></span></p>
+      </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="summary">
+      <div class="balance-group">
+        <div class="total-balance-container">
+          <p><strong>Total Balance :</strong> ₹ <span id="total-balance">0.00</span></p>
+        </div>
+        <!-- Summary Section -->
+        <div class="balance-item" id="balance-container">
+          <!-- Dynamic elements will be appended here -->
+        </div>
+      </div>
+      <div class="credit-debit-group">
+        <div class="credit-debit-item">
+          <p><strong>Total Credit : </strong> ₹ <span id="total-Credit">0.00</span></p>
+        </div>
+        <div class="credit-debit-item">
+          <p><strong>Total Debit : </strong> ₹ <span id="total-Debit">0.00</span></p>
+        </div>
+        <div class="credit-debit-item">
+          <p><strong>Today's Credit : </strong> ₹ <span id="Today's-Credit">0.00</span></p>
+        </div>
+        <div class="credit-debit-item">
+          <p><strong>Today's Debit : </strong> ₹ <span id="Today's-Credit">0.00</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Messages -->
+    <div id="error-message" class="error-message">
+      <span style="color:green;">Please fill in all fields correctly.</span>
+    </div>
+
+    <!-- Transaction Form -->
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <input type="text" id="description" placeholder="Enter description">
+      <div id="description-error" class="error-message" style="display: none; color: red; font-size: 12px;">
+        <!-- Error message will appear here -->
+      </div>
+    </div>
+
+    <!-- Transaction Type Section -->
+    <div class="form-group">
+      <label>Type:</label>
+      <div class="radio-group">
+        <label><input type="radio" name="type" value="Credit"> Credit</label>
+        <label><input type="radio" name="type" value="Debit" checked> Debit</label>
+      </div>
+    </div>
+
+    <!-- Amount Section -->
+    <div class="form-group">
+      <label for="amount">Amount (₹):</label>
+      <input type="number" id="amount" placeholder="Enter amount">
+      <div id="amount-error" class="error-message" style="display: none; color: red; font-size: 12px;">
+        <!-- Error message will appear here -->
+      </div>
+    </div>
+
+    <!-- Source Section -->
+    <div class="form-group">
+      <label for="source">Source:</label>
+      <select id="source">
+        <option value="cash">Cash</option>
+        <option value="bank1">Bank 1</option>
+        <option value="bank2">Bank 2</option>
+      </select>
+    </div>
+
+    <!-- Transaction Date Section -->
+    <div class="form-group">
+      <label for="transaction-date">Transaction Date (YYYY-MM-DD):</label>
+      <input type="date" id="transaction-date">
+      <div id="transaction-date-error" class="error-message" style="display: none; color: red; font-size: 12px;">
+        <!-- Error message will appear here -->
+      </div>
+    </div>
+
+    <!-- Add Transaction Button -->
+    <button onclick="addTransaction()">Add Transaction</button>
+
+    <!-- Transaction Table -->
+    <table>
+      <tbody id="transaction-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Source</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="/js/ script.js"></script>
+</body>
+
+</html>

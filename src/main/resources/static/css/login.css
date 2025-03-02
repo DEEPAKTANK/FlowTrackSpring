@@ -1,0 +1,168 @@
+/* General container styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #00bcd4, #ff9800); /* Gradient background for a fresh look */
+    color: #333;
+    position: relative;
+    z-index: 1;
+}
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .app-header {
+    margin-bottom: 20px;
+  }
+  
+  .app-header i {
+    font-size: 50px;
+    color: #4a90e2;
+  }
+  
+  .app-header h1 {
+    margin: 10px 0;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the left */
+    margin-bottom: 15px;
+    color: #333;
+    text-align: left; /* Ensure text is aligned to the left */
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #4a90e2; /* For modern browsers */}
+
+.checkbox-group label {
+    display: inline; /* Label stays in line with checkbox */
+    font-size: 14px;
+    color: #555555;
+    cursor: pointer;
+}
+
+  .submit-button {
+    background-color: #4a90e2;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-button:hover {
+    background-color: #357abd;
+  }
+  
+  .extra-actions {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .forgot-password a {
+    color: #4a90e2;
+    text-decoration: none;
+  }
+  
+  .forgot-password a:hover {
+    text-decoration: underline;
+  }
+  
+  .register .register-button {
+    margin-top: 10px;
+    display: block;
+    background-color: #4a90e2;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .register .register-button:hover {
+    background-color: #357abd;
+  }
+  /* Style for the login button */
+button[type="submit"] {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 12px 20px; /* Add padding to make the button bigger */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Set font size */
+    cursor: pointer; /* Add cursor pointer to indicate it's clickable */
+    width: 100%; /* Full width button */
+    transition: background-color 0.3s ease; /* Smooth transition for background change */
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049; /* Darker green when hovered */
+}
+
+button[type="submit"]:focus {
+    outline: none; /* Remove the default focus outline */
+}
+
+button[type="submit"]:active {
+    background-color: #3e8e41; /* Even darker green when clicked */
+}
+/* Style for the forgot password link */
+.forgot-password {
+    text-align: center; /* Center the text */
+    margin-top: 10px; /* Add some space above */
+}
+
+.forgot-password-link {
+    color: #4CAF50; /* Green color for the link */
+    font-size: 14px; /* Set a smaller font size */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make the text bold */
+}
+
+.forgot-password-link:hover {
+    color: #45a049; /* Slightly darker green on hover */
+    text-decoration: underline; /* Underline the link on hover */
+}
+
+.forgot-password-link:active {
+    color: #3e8e41; /* Even darker green when clicked */
+}

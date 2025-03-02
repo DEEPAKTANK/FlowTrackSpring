@@ -10,4 +10,6 @@ public class ProExpenditureApplication {
 		SpringApplication.run(ProExpenditureApplication.class, args);
 	}
 
+
 }
+
