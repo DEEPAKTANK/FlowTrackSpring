@@ -12,14 +12,13 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder // Add this annotation
+@Builder
 @Table(name = "bank_details")
 @EntityListeners(AuditingEntityListener.class) // Enable auditing
 public class BankDetails {
@@ -28,8 +27,9 @@ public class BankDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BankDetails> bankAccounts;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @NonNull
     @Column(name = "bank_id", nullable = false, unique = true, updatable = false)
@@ -55,10 +55,6 @@ public class BankDetails {
     @NonNull
     @Column(name = "balance", nullable = false)
     private long balance;
-
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
 
     @Column(name = "active", nullable = false)
     private boolean active = true; // Default to true

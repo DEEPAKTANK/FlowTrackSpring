@@ -7,18 +7,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class BankMapper {
     public BankDTO toDTO(BankDetails bankDetails) {
-        return new BankDTO(
-                bankDetails.getBankId(),
-                bankDetails.getBankName(),
-                bankDetails.getAccountType(),
-                bankDetails.getIfscCode(),
-                bankDetails.getBranchName(),
-                bankDetails.getBalance(),
-                bankDetails.isActive(),
-                bankDetails.getCreatedBy(),
-                bankDetails.getModifiedBy(),
-                bankDetails.getCreatedAt(),
-                bankDetails.getUpdatedAt()
-        );
+        return BankDTO.builder()
+                .bankId(bankDetails.getBankId())
+                .bankName(bankDetails.getBankName())
+                .accountType(bankDetails.getAccountType())
+                .ifscCode(bankDetails.getIfscCode())
+                .branchName(bankDetails.getBranchName())
+                .balance(bankDetails.getBalance())
+                .active(bankDetails.isActive())
+                .createdBy(bankDetails.getCreatedBy())
+                .modifiedBy(bankDetails.getModifiedBy())
+                .createdAt(bankDetails.getCreatedAt())
+                .updatedAt(bankDetails.getUpdatedAt())
+                .build();
     }
 }

@@ -15,7 +15,8 @@ public interface BankDetailsRepository extends JpaRepository<BankDetails, Intege
 
     // Find bank details by user
     Optional<BankDetails> findByUser(User user);
-
+    List<BankDetails> findByActiveTrue();
+    List<BankDetails> findByActiveFalse();
     // Fetch only required bank details as DTO
     @Query("SELECT new com.deepak.proexpenditure.pro_expenditure.dto.BankDTO(b.bankId, b.bankName, b.balance, b.active) FROM BankDetails b")
     List<BankDTO> findAllBankDetailsAsDTO();

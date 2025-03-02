@@ -25,8 +25,6 @@ public class BankDTO {
     private String modifiedBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    // Static method to convert entity to DTO
     public static BankDTO fromEntity(BankDetails bankDetails) {
         return BankDTO.builder()
                 .bankId(bankDetails.getBankId())
@@ -41,5 +39,11 @@ public class BankDTO {
                 .createdAt(bankDetails.getCreatedAt())
                 .updatedAt(bankDetails.getUpdatedAt())
                 .build();
+    }
+    public BankDTO(String bankId, String bankName, long balance, boolean active) {
+        this.bankId = bankId;
+        this.bankName = bankName;
+        this.balance = balance;
+        this.active = active;
     }
 }

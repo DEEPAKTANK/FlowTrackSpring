@@ -13,6 +13,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -51,11 +52,6 @@ public class User {
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
-    @NonNull
-    @CreationTimestamp
-    @Column(name = "date_registered", updatable = false)
-    private LocalDateTime dateRegistered;
-
     @Column(name = "active", nullable = false)
     private boolean active = true; // Default to active user
 
@@ -79,11 +75,18 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BankDetails> bankAccounts;
+
     @PrePersist
     private void generateUserId() {
         this.userId = "emp_" + UUID.randomUUID().toString().substring(0, 8);
     }
-
-    @Column(name = "deleted", nullable = false)
-    private boolean deleted = false;
+    @NonNull
+    @CreationTimestamp
+    @Column(name = "date_registered", updatable = false)
+    private LocalDateTime dateRegistered;
 }
