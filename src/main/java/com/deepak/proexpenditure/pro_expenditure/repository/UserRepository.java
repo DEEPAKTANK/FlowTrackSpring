@@ -15,16 +15,27 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
 
-    // Find user by ID
+    /**
+     * Save a User (inherited from JpaRepository)
+     */
+    User save(User user);
+
+    /**
+     * Find User by User ID
+     */
     Optional<User> findByUserId(String userId);
 
-    // Find all active users with pagination
-    Page<User> findByActiveTrue(Pageable pageable);
+    /**
+     * Find Active User by User ID and return DTO
+     */
+    @Query("SELECT new com.deepak.proexpenditure.pro_expenditure.dto.UserDTO(u.userId, u.name, u.role, u.status, u.active, u.dateRegistered) " +
+            "FROM User u WHERE u.userId = :userId AND u.active = true")
+    Optional<User> findByUserIdAndActiveTrue(String userId);
 
-    // Find users by status
-    List<User> findByStatus(UserStatus status);
-
-    // Fetch users as DTO to avoid exposing full entity
-    @Query("SELECT new com.deepak.proexpenditure.pro_expenditure.dto.UserDTO(u.userId, u.name, u.status, u.active) FROM User u")
-    List<UserDTO> findAllUsersAsDTO();
+    /**
+     * Get All Active Users as DTOs
+     */
+    @Query("SELECT new com.deepak.proexpenditure.pro_expenditure.dto.UserDTO(u.userId, u.name, u.role, u.status, u.active, u.dateRegistered) " +
+            "FROM User u WHERE u.active = true")
+    List<UserDTO> findAllByActiveTrue();
 }

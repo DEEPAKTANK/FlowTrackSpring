@@ -19,6 +19,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder // Add this annotation
 @Table(name = "bank_details")
 @EntityListeners(AuditingEntityListener.class) // Enable auditing
 public class BankDetails {
