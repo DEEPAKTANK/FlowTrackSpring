@@ -11,7 +11,5 @@ public class ProExpenditureApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProExpenditureApplication.class, args);
 	}
-
-
 }
 

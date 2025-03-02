@@ -1,8 +1,7 @@
 package com.deepak.proexpenditure.pro_expenditure.controller;
 
-import com.deepak.proexpenditure.pro_expenditure.repository.Users;
-import com.deepak.proexpenditure.pro_expenditure.service.UserService;
-import org.apache.catalina.User;
+import com.deepak.proexpenditure.pro_expenditure.entity.Users;
+import com.deepak.proexpenditure.pro_expenditure.service.UserService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +10,7 @@ import java.util.List;
 @RestController
 public class userController {
     @Autowired
-    UserService users;
+    UserService2 users;
 
     @GetMapping("/users")
     public List<Users> sayHello() {

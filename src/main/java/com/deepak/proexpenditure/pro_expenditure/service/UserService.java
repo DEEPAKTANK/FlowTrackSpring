@@ -1,32 +1,22 @@
 package com.deepak.proexpenditure.pro_expenditure.service;
 
-import com.deepak.proexpenditure.pro_expenditure.repository.Users;
+import com.deepak.proexpenditure.pro_expenditure.entity.User;
+import com.deepak.proexpenditure.pro_expenditure.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    int userid=100;
-    List <Users> users = new ArrayList<>(Arrays.asList(new Users(100,"Deeepak","Deepak123"),
-            new Users(101,"Kumar","Kumar123"),
-            new Users(103,"Tank","Tank123")));
-    public List<Users> getUsers(){
-        return users;
-    }
-    public int getUserid(){
-        this.userid++;
-        return userid;
-    }
-    public Users getUserByIds(int userID){
-        return users.stream().filter(p-> p.getUserID()==userID).findFirst().orElse(new Users(100,"Deeepak","Deepak123"));
-    }
-    public Users getUserByNames(String userName){
-        return users.stream().filter(p-> p.getUserName().equalsIgnoreCase(userName)).findFirst().orElse(new Users(100,"Deeepak","Deepak123"));
-    }
-    public void adduser(Users user){
-        users.add(user);
+
+    private final UserRepository userRepository;
+
+    @Transactional
+    public void deleteUser(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+        user.setDeleted(true);  // Mark user as deleted instead of removing
+        userRepository.save(user);
     }
 }

@@ -1,4 +1,4 @@
-package com.deepak.proexpenditure.pro_expenditure.repository;
+package com.deepak.proexpenditure.pro_expenditure.entity;
 
 import com.deepak.proexpenditure.pro_expenditure.enums.UserRole;
 import com.deepak.proexpenditure.pro_expenditure.enums.UserStatus;
@@ -81,4 +81,7 @@ public class User {
     private void generateUserId() {
         this.userId = "emp_" + UUID.randomUUID().toString().substring(0, 8);
     }
+
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
 }

@@ -1,6 +1,6 @@
-package com.deepak.proexpenditure.pro_expenditure.repository;
+package com.deepak.proexpenditure.pro_expenditure.entity;
 
-import com.deepak.proexpenditure.pro_expenditure.enums.AccountType;
+import com.deepak.proexpenditure.pro_expenditure.enums.CurrencyType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,49 +11,46 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "bank_details")
-@EntityListeners(AuditingEntityListener.class) // Enable auditing
-public class BankDetails {
+@Table(name = "total_balance", indexes = {
+        @Index(name = "idx_user_id", columnList = "user_id"),
+        @Index(name = "idx_bank_id", columnList = "bank_id")
+})@EntityListeners(AuditingEntityListener.class) // Enable auditing
+public class TotalBalance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NonNull
-    @Column(name = "bank_id", nullable = false, unique = true, updatable = false)
-    private String bankId;
-
-    @NonNull
-    @Column(name = "bank_name", nullable = false, length = 50)
-    private String bankName;
-
-    @NonNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "account_type", nullable = false)
-    private AccountType accountType = AccountType.SAVINGS; // Default SAVINGS
-
-    @NonNull
-    @Column(name = "ifsc_code", nullable = false, length = 11)
-    private String ifscCode;
-
-    @NonNull
-    @Column(name = "branch_name", nullable = false, length = 100)
-    private String branchName;
-
-    @NonNull
-    @Column(name = "balance", nullable = false)
-    private long balance;
-
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
+
+    @NonNull
+    @OneToOne
+    @JoinColumn(name = "bank_id", nullable = false, unique = true)
+    private BankDetails bank;
+
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency", nullable = false, length = 10)
+    private CurrencyType currency = CurrencyType.INR; // Default currency INR
+
+    @NonNull
+    @Column(name = "total_balance", nullable = false, precision = 18, scale = 2)
+    private BigDecimal totalBalance;
+
+    @Nullable
+    @OneToOne
+    @JoinColumn(name = "last_transaction_id", unique = true)
+    private Transaction lastTransaction;
 
     @Column(name = "active", nullable = false)
     private boolean active = true; // Default to true
@@ -77,9 +74,4 @@ public class BankDetails {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @PrePersist
-    private void generateBankId() {
-        this.bankId = "bnk_" + UUID.randomUUID().toString().substring(0, 8);
-    }
 }

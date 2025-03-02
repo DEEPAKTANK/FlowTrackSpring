@@ -1,4 +1,4 @@
-package com.deepak.proexpenditure.pro_expenditure.repository;
+package com.deepak.proexpenditure.pro_expenditure.entity;
 
 import com.deepak.proexpenditure.pro_expenditure.enums.TransactionType;
 import com.deepak.proexpenditure.pro_expenditure.enums.TransactionStatus;

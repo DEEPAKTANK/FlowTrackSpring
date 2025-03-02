@@ -1,6 +1,6 @@
 package com.deepak.proexpenditure.pro_expenditure.service;
 
-import com.deepak.proexpenditure.pro_expenditure.repository.Users;
+import com.deepak.proexpenditure.pro_expenditure.entity.Users;
 import org.springframework.stereotype.Service;
 
 @Service

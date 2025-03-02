@@ -1,15 +1,16 @@
-package com.deepak.proexpenditure.pro_expenditure.repository;
+package com.deepak.proexpenditure.pro_expenditure.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user_phone")
-public class UserPhone {
+@Table(name = "user_email")
+public class UserEmail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -18,9 +19,9 @@ public class UserPhone {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "phone_number", nullable = false, unique = true)
-    private String phoneNumber;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "is_primary", nullable = false)
-    private boolean isPrimary;
+    private boolean isPrimary; // Marks the primary email
 }

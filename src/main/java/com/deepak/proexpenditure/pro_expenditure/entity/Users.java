@@ -1,7 +1,5 @@
-package com.deepak.proexpenditure.pro_expenditure.repository;
+package com.deepak.proexpenditure.pro_expenditure.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Component;
 
 
