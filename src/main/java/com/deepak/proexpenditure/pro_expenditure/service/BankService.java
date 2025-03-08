@@ -48,19 +48,28 @@ public class BankService {
         return bankRepository.findByActiveFalse();
     }
 
+
+
 //    // Soft Delete Bank (Set Active to False)
-//    public void deactivateBank(String bankId) {
-//        BankDTO bank = bankRepository.findByBankIdAndActiveTrue(bankId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Active bank not found"));
-//        bank.setActive(false);
-//        bankRepository.save(bank);
-//    }
-//
-//    // Restore Deleted Bank (Set Active to True)
-//    public void restoreBank(String bankId) {
-//        BankDTO bank = bankRepository.findByBankIdAndActiveTrue(bankId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Bank not found"));
-//        bank.setActive(true);
-//        bankRepository.save(bank);
-//    }
+    public void deactivateBank(String bankId) {
+        BankDetails bank = bankRepository.findByBankIdAndActiveTrue(bankId)
+                .orElseThrow(() -> new ResourceNotFoundException("Active bank not found"));
+        bank.setActive(false);
+        bankRepository.save(bank);
+    }
+
+    // Restore Deleted Bank (Set Active to True)
+    public void restoreBank(String bankId) {
+        BankDetails bank = bankRepository.findByBankIdAndActiveTrue(bankId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bank not found"));
+        bank.setActive(true);
+        bankRepository.save(bank);
+    }
+
+    public List<BankDTO> getBanksByUserId(String userId) {
+        return bankRepository.findByUserUserIdAndActiveTrue(userId)
+                .stream()
+                .map(BankDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
 }

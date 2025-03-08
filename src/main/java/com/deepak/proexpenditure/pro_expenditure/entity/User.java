@@ -37,6 +37,10 @@ public class User {
     @NonNull
     @Column(name = "name", nullable = false, length = 50)
     private String name;
+    @NonNull
+    @Column(name = "user_name", nullable = false, length = 16,unique = true)
+    private String user_name;
+
 
     @NonNull
     @Enumerated(EnumType.STRING)
@@ -83,7 +87,7 @@ public class User {
 
     @PrePersist
     private void generateUserId() {
-        this.userId = "emp_" + UUID.randomUUID().toString().substring(0, 8);
+        this.userId = "ft_" + UUID.randomUUID().toString().substring(0, 8);
     }
     @NonNull
     @CreationTimestamp

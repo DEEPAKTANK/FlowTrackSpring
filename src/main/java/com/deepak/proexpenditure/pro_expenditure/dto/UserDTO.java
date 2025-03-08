@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class UserDTO {
     private String userId;
     private String name;
+    private String user_name;
     private UserRole role;
     private UserStatus status;
     private boolean active;
@@ -26,6 +27,7 @@ public class UserDTO {
     public UserDTO(User user) {
         this.userId = user.getUserId();
         this.name = user.getName();
+        this.name = user.getUser_name();
         this.role = user.getRole();
         this.status = user.getStatus();
         this.active = user.isActive();
