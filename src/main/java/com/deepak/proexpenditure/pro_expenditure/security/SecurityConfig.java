@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers( "/api/users/register",
-                                "/api/auth/login","/api/auth/create_password").permitAll() // Public access for authentication
+                                "/api/auth/login","/api/auth/create_password","/api/banks/createbank").permitAll() // Public access for authentication
                         .anyRequest().authenticated() // Protect all other routes
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

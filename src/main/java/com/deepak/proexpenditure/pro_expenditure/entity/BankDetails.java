@@ -28,7 +28,7 @@ public class BankDetails {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false, unique = true)
     private User user;
 
     @NonNull
@@ -44,12 +44,12 @@ public class BankDetails {
     @Column(name = "account_type", nullable = false)
     private AccountType accountType = AccountType.SAVINGS; // Default SAVINGS
 
-    @NonNull
-    @Column(name = "ifsc_code", nullable = false, length = 11)
+    @Nullable
+    @Column(name = "ifsc_code",  length = 11)
     private String ifscCode;
 
-    @NonNull
-    @Column(name = "branch_name", nullable = false, length = 100)
+    @Nullable
+    @Column(name = "branch_name",  length = 100)
     private String branchName;
 
     @NonNull

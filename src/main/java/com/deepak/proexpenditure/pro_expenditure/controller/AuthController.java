@@ -1,5 +1,6 @@
 package com.deepak.proexpenditure.pro_expenditure.controller;
 
+import com.deepak.proexpenditure.pro_expenditure.dto.CreatePasswordRequest;
 import com.deepak.proexpenditure.pro_expenditure.dto.LoginRequest;
 import com.deepak.proexpenditure.pro_expenditure.service.AuthService;
 import com.deepak.proexpenditure.pro_expenditure.service.UserService;

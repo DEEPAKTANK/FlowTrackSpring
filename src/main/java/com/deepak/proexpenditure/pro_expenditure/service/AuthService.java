@@ -1,23 +1,19 @@
 package com.deepak.proexpenditure.pro_expenditure.service;
 
-import com.deepak.proexpenditure.pro_expenditure.controller.CreatePasswordRequest;
+import com.deepak.proexpenditure.pro_expenditure.dto.CreatePasswordRequest;
 import com.deepak.proexpenditure.pro_expenditure.dto.LoginRequest;
 import com.deepak.proexpenditure.pro_expenditure.entity.User;
 import com.deepak.proexpenditure.pro_expenditure.entity.UserAuth;
 import com.deepak.proexpenditure.pro_expenditure.exception.ResourceNotFoundException;
 import com.deepak.proexpenditure.pro_expenditure.repository.UserAuthRepository;
 import com.deepak.proexpenditure.pro_expenditure.repository.UserRepository;
-import com.deepak.proexpenditure.pro_expenditure.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service

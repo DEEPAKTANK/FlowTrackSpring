@@ -17,7 +17,7 @@ public class BankController {
 
     private final BankService bankService;
 
-    @PostMapping("/create")
+    @PostMapping("/createbank")
     public ResponseEntity<BankDTO> createBankAccount(@RequestBody BankDTO bankDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loggedInUserId = authentication.getName(); // Get the logged-in user's ID

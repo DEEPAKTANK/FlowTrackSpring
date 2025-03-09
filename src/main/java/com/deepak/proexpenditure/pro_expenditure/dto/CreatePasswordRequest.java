@@ -1,4 +1,4 @@
-package com.deepak.proexpenditure.pro_expenditure.controller;
+package com.deepak.proexpenditure.pro_expenditure.dto;
 
 import lombok.Data;
 
