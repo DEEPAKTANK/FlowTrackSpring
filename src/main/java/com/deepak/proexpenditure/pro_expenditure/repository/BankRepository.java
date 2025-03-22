@@ -9,20 +9,33 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface BankRepository extends JpaRepository<BankDetails, Integer> {
+public interface BankRepository extends JpaRepository<BankDetails, String> {
 
-    @Query("SELECT new com.deepak.proexpenditure.pro_expenditure.dto.BankDTO(b.bankId, b.bankName, b.accountType, b.ifscCode, b.branchName, b.balance, b.active, b.createdBy, b.modifiedBy, b.createdAt, b.updatedAt) FROM BankDetails b WHERE b.bankId = :bankId")
-    Optional<BankDTO> findByBankId(@Param("bankId") String bankId);
+    // Get Bank by ID
+    @Query("SELECT b FROM BankDetails b WHERE b.bankId = :bankId")
+    Optional<BankDetails> findByBankId(@Param("bankId") String bankId);
 
-    @Query("SELECT new com.deepak.proexpenditure.pro_expenditure.dto.BankDTO(b.bankId, b.bankName, b.accountType, b.ifscCode, b.branchName, b.balance, b.active, b.createdBy, b.modifiedBy, b.createdAt, b.updatedAt) FROM BankDetails b WHERE b.bankId = :bankId AND b.active = true")
+    // Get Active Bank by ID
+    @Query("SELECT b FROM BankDetails b WHERE b.bankId = :bankId AND b.active = true")
     Optional<BankDetails> findByBankIdAndActiveTrue(@Param("bankId") String bankId);
 
+    // Get Inactive Bank by ID
+    @Query("SELECT b FROM BankDetails b WHERE b.bankId = :bankId AND b.active = false")
+    Optional<BankDetails> findByBankIdAndActiveFalse(@Param("bankId") String bankId);
+
+    // Get All Active Banks
     @Query("SELECT new com.deepak.proexpenditure.pro_expenditure.dto.BankDTO(b.bankId, b.bankName, b.accountType, b.ifscCode, b.branchName, b.balance, b.active, b.createdBy, b.modifiedBy, b.createdAt, b.updatedAt) FROM BankDetails b WHERE b.active = true")
     List<BankDTO> findByActiveTrue();
 
+    // Get All Inactive Banks
     @Query("SELECT new com.deepak.proexpenditure.pro_expenditure.dto.BankDTO(b.bankId, b.bankName, b.accountType, b.ifscCode, b.branchName, b.balance, b.active, b.createdBy, b.modifiedBy, b.createdAt, b.updatedAt) FROM BankDetails b WHERE b.active = false")
     List<BankDTO> findByActiveFalse();
 
-    List<BankDetails> findByUserUserIdAndActiveTrue(String userId);
+    // Get Banks for a Specific User
+    @Query("SELECT b FROM BankDetails b WHERE b.user.userId = :userId AND b.active = true")
+    List<BankDetails> findByUserUserIdAndActiveTrue(@Param("userId") String userId);
 
+    // Check if Bank Exists for User
+    @Query("SELECT COUNT(b) > 0 FROM BankDetails b WHERE b.user.userId = :userId AND b.bankId = :bankId")
+    boolean existsByUserIdAndBankId(@Param("userId") String userId, @Param("bankId") String bankId);
 }

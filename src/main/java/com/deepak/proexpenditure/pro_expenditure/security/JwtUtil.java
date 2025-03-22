@@ -1,20 +1,26 @@
 package com.deepak.proexpenditure.pro_expenditure.security;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
 @Component
+@NoArgsConstructor
+
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "your-256-bit-secret-your-256-bit-secret"; // Use a strong secret
+    private static final String SECRET_KEY = "SuperahvakdjbjdkajkdgkajsdSecretKeyForJWTGeneration123=="; // Use a strong secret
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     // Generate JWT Token

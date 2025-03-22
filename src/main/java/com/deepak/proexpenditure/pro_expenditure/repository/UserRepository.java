@@ -38,4 +38,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
     @Query("SELECT new com.deepak.proexpenditure.pro_expenditure.dto.UserDTO(u.userId, u.name, u.role, u.status, u.active, u.dateRegistered) " +
             "FROM User u WHERE u.active = true")
     List<UserDTO> findAllByActiveTrue();
+
+    @Query("SELECT new com.deepak.proexpenditure.pro_expenditure.dto.UserDTO(u.userId, u.name, u.role, u.status, u.active, u.dateRegistered) FROM User u")
+    List<UserDTO> findUsers();
 }

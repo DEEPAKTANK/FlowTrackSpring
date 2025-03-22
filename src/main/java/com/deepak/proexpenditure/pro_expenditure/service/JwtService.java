@@ -23,7 +23,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "your-secure-secret-key-must-be-long-enough"; // Ensure a long enough key
+    private static final String SECRET_KEY = "SuperahvakdjbjdkajkdgkajsdSecretKeyForJWTGeneration123=="; // Ensure a long enough key
 
     public String extractUserId(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -62,15 +62,19 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSignInKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            throw new BadCredentialsException("Invalid or expired JWT token");
+        }
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = SECRET_KEY.getBytes(); // Convert string to byte array
-        return Keys.hmacShaKeyFor(keyBytes);  // Generate HMAC key
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

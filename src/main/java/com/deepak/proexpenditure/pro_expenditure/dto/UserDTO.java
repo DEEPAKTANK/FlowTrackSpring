@@ -27,10 +27,18 @@ public class UserDTO {
     public UserDTO(User user) {
         this.userId = user.getUserId();
         this.name = user.getName();
-        this.name = user.getUser_name();
+        this.user_name  = user.getUser_name();
         this.role = user.getRole();
         this.status = user.getStatus();
         this.active = user.isActive();
         this.dateRegistered = user.getDateRegistered();
+    }
+    public UserDTO(String userId, String name, UserRole role, UserStatus status, Boolean active, LocalDateTime dateRegistered) {
+        this.userId = userId;
+        this.name = name;
+        this.role = role;
+        this.status = status;
+        this.active = active;
+        this.dateRegistered = dateRegistered;
     }
 }
