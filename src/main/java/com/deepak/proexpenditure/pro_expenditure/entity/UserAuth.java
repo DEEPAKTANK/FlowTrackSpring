@@ -25,7 +25,7 @@ public class UserAuth {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false, unique = true)
     private User user;
 
-    @Column(name = "password_hash", nullable = false, length = 255)
+    @Column(name = "password_hash", nullable = false, length = 255,unique = false)
     private String passwordHash;
 
     @Column(name = "salt", length = 100, nullable = true) // Nullable in case of Bcrypt

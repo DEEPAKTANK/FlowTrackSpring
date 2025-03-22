@@ -87,7 +87,7 @@ public class User {
 
     @PrePersist
     private void generateUserId() {
-        this.userId = "ft_" + UUID.randomUUID().toString().substring(0, 8);
+        this.userId = user_name;
     }
     @NonNull
     @CreationTimestamp

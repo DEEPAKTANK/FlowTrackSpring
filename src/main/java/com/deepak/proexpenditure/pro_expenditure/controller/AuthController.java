@@ -20,11 +20,6 @@ public class AuthController {
     private final AuthService authService;
     ;
 
-//    @PostMapping("/register")
-//    public ResponseEntity<String> registerUser(@RequestBody RegisterUserRequest request) {
-//        userService.registerUser(request);
-//        return ResponseEntity.ok("User registered successfully. Please set your password.");
-//    }
     @PostMapping("/create_password")
     public ResponseEntity<String> createPassword(@RequestBody CreatePasswordRequest request) {
         authService.createPassword(request);
