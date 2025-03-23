@@ -1,15 +1,15 @@
 package com.deepak.proexpenditure.pro_expenditure.security;
 
-import com.deepak.proexpenditure.pro_expenditure.entity.User;
-import com.deepak.proexpenditure.pro_expenditure.entity.UserAuth;
-import com.deepak.proexpenditure.pro_expenditure.repository.UserAuthRepository;
-import com.deepak.proexpenditure.pro_expenditure.repository.UserRepository;
+import com.deepak.proexpenditure.pro_expenditure.entity.*;
+import com.deepak.proexpenditure.pro_expenditure.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,22 +17,37 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserAuthRepository userAuthRepository;
+    private final UserEmailRepository userEmailRepository;
+    private final UserPhoneRepository userPhoneRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        // Fetch User entity
-        User user = userRepository.findByUserIdAndActiveTrue(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + userId));
+    public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
+        Optional<User> optionalUser;
 
-        // Fetch authentication details
-        UserAuth userAuth = userAuthRepository.findByUser_UserId(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("Authentication details not found for user ID: " + userId));
+        if (identifier.contains("@")) { // ✅ Login via Email
+            UserEmail userEmail = userEmailRepository.findByEmail(identifier)
+                    .orElseThrow(() -> new UsernameNotFoundException("Email not found: " + identifier));
+            optionalUser = Optional.of(userEmail.getUser());
 
-        // Return a Spring Security UserDetails object
+        } else if (identifier.matches("\\d+")) { // ✅ Login via Phone Number
+            UserPhone userPhone = userPhoneRepository.findByPhone(identifier)
+                    .orElseThrow(() -> new UsernameNotFoundException("Phone number not found: " + identifier));
+            optionalUser = Optional.of(userPhone.getUser());
+
+        } else { // ✅ Login via User ID
+            optionalUser = userRepository.findByUserIdAndActiveTrue(identifier);
+        }
+
+        User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User not found: " + identifier));
+
+        // ✅ Fetch authentication details
+        UserAuth userAuth = userAuthRepository.findByUser_UserId(user.getUserId())
+                .orElseThrow(() -> new UsernameNotFoundException("Authentication details not found for user: " + identifier));
+
         return new org.springframework.security.core.userdetails.User(
-                user.getUserId(), // Username (userId in our case)
-                userAuth.getPasswordHash(), // Password (hashed)
-                Collections.emptyList() // Authorities (empty for now)
+                user.getUserId(),
+                userAuth.getPasswordHash(),
+                Collections.emptyList()
         );
     }
 }

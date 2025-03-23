@@ -26,10 +26,9 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
     Optional<User> findByUserId(String userId);
 
     /**
-     * Find Active User by User ID and return DTO
+     * Find Active User by User ID and return user
      */
-    @Query("SELECT new com.deepak.proexpenditure.pro_expenditure.dto.UserDTO(u.userId, u.name, u.role, u.status, u.active, u.dateRegistered) " +
-            "FROM User u WHERE u.userId = :userId AND u.active = true")
+    @Query("SELECT u FROM User u WHERE u.userId = :userId AND u.active = true")
     Optional<User> findByUserIdAndActiveTrue(String userId);
 
     /**

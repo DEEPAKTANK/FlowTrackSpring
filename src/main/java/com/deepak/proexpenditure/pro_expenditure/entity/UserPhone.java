@@ -1,11 +1,10 @@
 package com.deepak.proexpenditure.pro_expenditure.entity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_phone")
@@ -19,7 +18,7 @@ public class UserPhone {
     private User user;
 
     @Column(name = "phone_number", nullable = false, unique = true)
-    private String phoneNumber;
+    private String phone;
 
     @Column(name = "is_primary", nullable = false)
     private boolean isPrimary;
