@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class BankMapper {
     public BankDTO toDTO(BankDetails bankDetails) {
         return BankDTO.builder()
-                .bankId(bankDetails.getBankId())
+
                 .bankName(bankDetails.getBankName())
                 .accountType(bankDetails.getAccountType())
                 .ifscCode(bankDetails.getIfscCode())

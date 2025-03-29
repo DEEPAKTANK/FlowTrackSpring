@@ -1,21 +1,36 @@
 package com.deepak.proexpenditure.pro_expenditure.service;
 
 import com.deepak.proexpenditure.pro_expenditure.dto.BankDTO;
+import com.deepak.proexpenditure.pro_expenditure.entity.BalanceHistory;
 import com.deepak.proexpenditure.pro_expenditure.entity.BankDetails;
+import com.deepak.proexpenditure.pro_expenditure.entity.TotalBalance;
 import com.deepak.proexpenditure.pro_expenditure.entity.User;
+import com.deepak.proexpenditure.pro_expenditure.enums.CurrencyType;
+import com.deepak.proexpenditure.pro_expenditure.events.BankCreatedEvent;
 import com.deepak.proexpenditure.pro_expenditure.exception.ResourceNotFoundException;
+import com.deepak.proexpenditure.pro_expenditure.exception.TotalBalanceAlreadyExistsException;
 import com.deepak.proexpenditure.pro_expenditure.exception.UnauthorizedAccessException;
+import com.deepak.proexpenditure.pro_expenditure.repository.BalanceHistoryRepository;
 import com.deepak.proexpenditure.pro_expenditure.repository.BankRepository;
+import com.deepak.proexpenditure.pro_expenditure.repository.TotalBalanceRepository;
 import com.deepak.proexpenditure.pro_expenditure.repository.UserRepository;
+import com.deepak.proexpenditure.pro_expenditure.utils.IDGenerator;
 import lombok.RequiredArgsConstructor;
+import java.util.Optional;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -23,6 +38,9 @@ public class BankService {
 
     private final BankRepository bankRepository;
     private final UserRepository userRepository;
+    private final BalanceHistoryRepository balanceHistoryRepository;
+    private final ApplicationEventPublisher applicationEventPublisher; // ✅ Injected
+
 
     // ✅ Get logged-in user ID
     private String getLoggedInUserId() {
@@ -35,9 +53,21 @@ public class BankService {
         String loggedInUserId = getLoggedInUserId();
         User user = userRepository.findByUserIdAndActiveTrue(loggedInUserId)
                 .orElseThrow(() -> new ResourceNotFoundException("Active user not found"));
+        log.info("user------------- {}", user);
+
+        // Get count of existing banks for this user
+        long bankCount = bankRepository.countByUser(user);
+        log.info("bankCount------------- {}", bankCount);
+
+        // Generate structured bank ID
+        String bankId = String.format("BNK-%s-%04d", loggedInUserId, bankCount + 1);
+        log.info("bankId------------- {}", bankId);
 
         BankDetails bankDetails = BankDetails.builder()
                 .bankName(bankDTO.getBankName())
+                .bankId(bankId)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .accountType(bankDTO.getAccountType())
                 .ifscCode(bankDTO.getIfscCode())
                 .branchName(bankDTO.getBranchName())
@@ -48,7 +78,26 @@ public class BankService {
                 .modifiedBy(loggedInUserId)
                 .build();
 
+        // Save bank details first
         BankDetails savedBank = bankRepository.save(bankDetails);
+        log.info("savedBank------------- {}", 1);
+
+        // Create BalanceHistory entry
+        BalanceHistory balanceHistory = BalanceHistory.builder()
+                .previousBalance((long) 0.0)  // Set previous balance as 0 for a new account
+                .newBalance(bankDTO.getBalance())
+                .user(user)
+                .bank(savedBank)  // Assign saved bank details
+                .updatedAt(LocalDateTime.now())
+                .updatedBy(loggedInUserId)
+                .build();
+
+        // Save balance history
+        balanceHistoryRepository.save(balanceHistory);
+        log.info("savedBank------------- {}", 2);
+
+// Check if the user already has a TotalBalance entry
+        applicationEventPublisher.publishEvent(new BankCreatedEvent(this, user, savedBank, bankDTO.getBalance()));
         return BankDTO.fromEntity(savedBank);
     }
 
@@ -145,4 +194,5 @@ public class BankService {
                 .map(BankDTO::fromEntity)
                 .collect(Collectors.toList());
     }
+
 }

@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class BankDTO {
+    private String userId;
     private String bankId;
     private String bankName;
     private AccountType accountType;
@@ -38,6 +39,7 @@ public class BankDTO {
                 .modifiedBy(bankDetails.getModifiedBy())
                 .createdAt(bankDetails.getCreatedAt())
                 .updatedAt(bankDetails.getUpdatedAt())
+                .userId(bankDetails.getUser().getUserId())
                 .build();
     }
     public BankDTO(String bankId, String bankName, long balance, boolean active) {
@@ -46,4 +48,5 @@ public class BankDTO {
         this.balance = balance;
         this.active = active;
     }
+
 }

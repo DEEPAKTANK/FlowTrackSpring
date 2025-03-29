@@ -84,7 +84,7 @@ public class AuthService {
         Optional<User> optionalUser;
 
         // ✅ Identify Login Type (Email, Phone, User ID)
-        if (request.getIdentifier().contains("@")) { // Email Login
+        if (request.getIdentifier().contains(".com")) { // Email Login
             optionalUser = userEmailRepository.findByEmail(request.getIdentifier())
                     .map(UserEmail::getUser);
         } else if (request.getIdentifier().matches("\\d+")) { // Phone Login
@@ -119,7 +119,6 @@ public class AuthService {
     }
 
     public void addEmail(AddEmailRequest request) {
-        log.info("request.-------->{} ", request);
         User user = userRepository.findByUserIdAndActiveTrue(request.getIdentifier())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + request.getIdentifier()));
 

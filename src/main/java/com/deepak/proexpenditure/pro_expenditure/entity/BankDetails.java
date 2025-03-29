@@ -28,10 +28,9 @@ public class BankDetails {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false, unique = true)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @NonNull
     @Column(name = "bank_id", nullable = false, unique = true, updatable = false)
     private String bankId;
 
@@ -79,8 +78,4 @@ public class BankDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    private void generateBankId() {
-        this.bankId = "bnk_" + UUID.randomUUID().toString().substring(0, 8);
-    }
 }

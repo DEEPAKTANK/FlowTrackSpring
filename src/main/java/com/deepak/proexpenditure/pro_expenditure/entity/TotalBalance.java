@@ -11,17 +11,18 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "total_balance", indexes = {
         @Index(name = "idx_user_id", columnList = "user_id"),
         @Index(name = "idx_bank_id", columnList = "bank_id")
-})@EntityListeners(AuditingEntityListener.class) // Enable auditing
+})
+@EntityListeners(AuditingEntityListener.class) // Enable auditing
 public class TotalBalance {
 
     @Id
@@ -34,18 +35,13 @@ public class TotalBalance {
     private User user;
 
     @NonNull
-    @OneToOne
-    @JoinColumn(name = "bank_id", nullable = false, unique = true)
-    private BankDetails bank;
-
-    @NonNull
     @Enumerated(EnumType.STRING)
     @Column(name = "currency", nullable = false, length = 10)
     private CurrencyType currency = CurrencyType.INR; // Default currency INR
 
     @NonNull
     @Column(name = "total_balance", nullable = false, precision = 18, scale = 2)
-    private BigDecimal totalBalance;
+    private Long totalBalance;
 
     @Nullable
     @OneToOne

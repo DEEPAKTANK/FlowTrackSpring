@@ -2,6 +2,7 @@ package com.deepak.proexpenditure.pro_expenditure.repository;
 
 import com.deepak.proexpenditure.pro_expenditure.dto.BankDTO;
 import com.deepak.proexpenditure.pro_expenditure.entity.BankDetails;
+import com.deepak.proexpenditure.pro_expenditure.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -38,4 +39,6 @@ public interface BankRepository extends JpaRepository<BankDetails, String> {
     // Check if Bank Exists for User
     @Query("SELECT COUNT(b) > 0 FROM BankDetails b WHERE b.user.userId = :userId AND b.bankId = :bankId")
     boolean existsByUserIdAndBankId(@Param("userId") String userId, @Param("bankId") String bankId);
+    long countByUser(User user);
+
 }

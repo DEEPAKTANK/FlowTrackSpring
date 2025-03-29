@@ -93,4 +93,5 @@ public class User {
     @CreationTimestamp
     @Column(name = "date_registered", updatable = false)
     private LocalDateTime dateRegistered;
+
 }
