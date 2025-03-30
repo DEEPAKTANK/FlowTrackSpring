@@ -16,6 +16,14 @@ public class BankCreatedEvent extends ApplicationEvent {
         this.initialBalance = initialBalance;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public BankDetails getBankDetails() {
+        return bankDetails;
+    }
+
     public String getUserId() {
         return user.getUserId();
     }

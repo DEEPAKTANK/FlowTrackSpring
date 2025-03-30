@@ -40,5 +40,6 @@ public interface BankRepository extends JpaRepository<BankDetails, String> {
     @Query("SELECT COUNT(b) > 0 FROM BankDetails b WHERE b.user.userId = :userId AND b.bankId = :bankId")
     boolean existsByUserIdAndBankId(@Param("userId") String userId, @Param("bankId") String bankId);
     long countByUser(User user);
-
+    @Query("SELECT COALESCE(SUM(b.balance), 0) FROM BankDetails b WHERE b.user = :user")
+    Long sumBalanceByUser(@Param("user") User user);
 }

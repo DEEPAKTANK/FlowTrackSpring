@@ -19,8 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "total_balance", indexes = {
-        @Index(name = "idx_user_id", columnList = "user_id"),
-        @Index(name = "idx_bank_id", columnList = "bank_id")
+        @Index(name = "idx_user_id", columnList = "user_id")
 })
 @EntityListeners(AuditingEntityListener.class) // Enable auditing
 public class TotalBalance {
@@ -29,9 +28,11 @@ public class TotalBalance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NonNull
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+//    @OneToOne
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false, unique = true)
     private User user;
 
     @NonNull
@@ -40,7 +41,7 @@ public class TotalBalance {
     private CurrencyType currency = CurrencyType.INR; // Default currency INR
 
     @NonNull
-    @Column(name = "total_balance", nullable = false, precision = 18, scale = 2)
+    @Column(name = "total_balance", nullable = false, precision = 18, scale = 2,updatable = true)
     private Long totalBalance;
 
     @Nullable
