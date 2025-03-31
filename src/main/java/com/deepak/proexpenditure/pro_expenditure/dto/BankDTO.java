@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class BankDTO {
     private String userId;
     private String bankId;
+    private String description;
     private String bankName;
     private AccountType accountType;
     private String ifscCode;
@@ -42,11 +43,4 @@ public class BankDTO {
                 .userId(bankDetails.getUser().getUserId())
                 .build();
     }
-    public BankDTO(String bankId, String bankName, long balance, boolean active) {
-        this.bankId = bankId;
-        this.bankName = bankName;
-        this.balance = balance;
-        this.active = active;
-    }
-
 }

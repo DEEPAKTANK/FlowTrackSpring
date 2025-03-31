@@ -28,9 +28,6 @@ public class TotalBalance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-//    @OneToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false, unique = true)
     private User user;
@@ -41,13 +38,8 @@ public class TotalBalance {
     private CurrencyType currency = CurrencyType.INR; // Default currency INR
 
     @NonNull
-    @Column(name = "total_balance", nullable = false, precision = 18, scale = 2,updatable = true)
+    @Column(name = "total_balance", nullable = false, precision = 18, scale = 2, updatable = true)
     private Long totalBalance;
-
-    @Nullable
-    @OneToOne
-    @JoinColumn(name = "last_transaction_id", unique = true)
-    private Transaction lastTransaction;
 
     @Column(name = "active", nullable = false)
     private boolean active = true; // Default to true

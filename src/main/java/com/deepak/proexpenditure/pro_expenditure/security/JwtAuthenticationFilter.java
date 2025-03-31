@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
                 log.info("User authenticated: {}", userId); // 🟢 Log successful authentication
             } else {
-                log.warn("JWT validation failed");
+                jwtUtil.checkTokenExpiration(jwt);
             }
         } else {
             log.warn("User ID not found in JWT");

@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.lang.Nullable;
 
 
 import java.math.BigDecimal;
@@ -27,8 +28,8 @@ public class BalanceHistory {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "bank_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bank_id", referencedColumnName = "bank_id", nullable = false, unique = true)
     private BankDetails bank;
 
     @Column(name = "previous_balance", nullable = false, precision = 18, scale = 2)
@@ -44,4 +45,9 @@ public class BalanceHistory {
     @CreatedBy
     @Column(name = "updated_by", updatable = false)
     private String updatedBy;
+
+    @Nullable
+    @OneToOne
+    @JoinColumn(name = "last_transaction_id", unique = true)
+    private Transaction lastTransaction;
 }

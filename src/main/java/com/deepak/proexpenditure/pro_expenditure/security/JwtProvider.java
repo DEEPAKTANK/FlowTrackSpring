@@ -6,6 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
@@ -46,35 +47,67 @@ public class JwtProvider {
     public boolean validateToken(String token, String userId) {
         try {
             return extractUserId(token).equals(userId) && !isTokenExpired(token);
+        } catch (JwtException e) {
+            log.warn("JWT validation error: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public ResponseEntity<String> checkTokenExpiration(String token) {
+        try {
+            boolean expired = isTokenExpired(token);
+            if (expired) {
+                return ResponseEntity.status(401).body("Token has expired");
+            }
+            return ResponseEntity.ok("Token is valid");
         } catch (ExpiredJwtException e) {
-            log.warn("JWT expired: {}", e.getMessage());
-            throw new ExpiredJwtException(null, null, "JWT token has expired");
+            return ResponseEntity.status(401).body("Token has expired");
         } catch (UnsupportedJwtException e) {
-            log.warn("Unsupported JWT: {}", e.getMessage());
+            return ResponseEntity.status(400).body("Unsupported JWT token");
+        } catch (MalformedJwtException e) {
+            return ResponseEntity.status(400).body("Malformed JWT token");
+        } catch (SignatureException e) {
+            return ResponseEntity.status(403).body("Invalid JWT signature");
+        } catch (JwtException e) {
+            return ResponseEntity.status(400).body("Invalid JWT token");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal server error");
+        }
+    }
+
+    private boolean isTokenExpired(String token) {
+        try {
+            return extractClaim(token, Claims::getExpiration).before(new Date());
+        } catch (JwtException e) {
+            log.warn("Error checking token expiration: {}", e.getMessage());
+            return true; // Assume expired in case of error
+        }
+    }
+
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        try {
+            final Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            return claimsResolver.apply(claims);
+        } catch (ExpiredJwtException e) {
+            log.warn("JWT token has expired: {}", e.getMessage());
+            throw new JwtException("JWT token has expired");
+        } catch (UnsupportedJwtException e) {
+            log.warn("Unsupported JWT token: {}", e.getMessage());
             throw new JwtException("Unsupported JWT token");
         } catch (MalformedJwtException e) {
-            log.warn("Malformed JWT: {}", e.getMessage());
+            log.warn("Malformed JWT token: {}", e.getMessage());
             throw new JwtException("Malformed JWT token");
         } catch (SignatureException e) {
             log.warn("Invalid JWT signature: {}", e.getMessage());
             throw new JwtException("Invalid JWT signature");
         } catch (JwtException e) {
-            log.warn("Invalid JWT: {}", e.getMessage());
+            log.warn("Invalid JWT token: {}", e.getMessage());
             throw new JwtException("Invalid JWT token");
         }
-    }
-
-    private boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
-    }
-
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return claimsResolver.apply(claims);
     }
 
     private Key signingKey;

@@ -39,7 +39,15 @@ public interface BankRepository extends JpaRepository<BankDetails, String> {
     // Check if Bank Exists for User
     @Query("SELECT COUNT(b) > 0 FROM BankDetails b WHERE b.user.userId = :userId AND b.bankId = :bankId")
     boolean existsByUserIdAndBankId(@Param("userId") String userId, @Param("bankId") String bankId);
+
     long countByUser(User user);
     @Query("SELECT COALESCE(SUM(b.balance), 0) FROM BankDetails b WHERE b.user = :user")
     Long sumBalanceByUser(@Param("user") User user);
+    /**
+     * Fetch the initial balance of a bank by its ID.
+     */
+    @Query("SELECT b.balance FROM BankDetails b WHERE b.bankId = :bankId")
+    Optional<Long> findInitialBalanceByBankId(@Param("bankId") String bankId);
+    @Query("UPDATE BankDetails b SET b.balance = b.balance + :amount WHERE b.bankId = :bankId")
+    void updateBalance(String bankId, Long amount);
 }

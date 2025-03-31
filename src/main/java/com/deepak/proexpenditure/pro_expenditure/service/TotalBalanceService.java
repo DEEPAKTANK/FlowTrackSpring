@@ -6,6 +6,7 @@ import com.deepak.proexpenditure.pro_expenditure.entity.User;
 import com.deepak.proexpenditure.pro_expenditure.enums.CurrencyType;
 import com.deepak.proexpenditure.pro_expenditure.events.BankCreatedEvent;
 import com.deepak.proexpenditure.pro_expenditure.repository.TotalBalanceRepository;
+import com.deepak.proexpenditure.pro_expenditure.repository.TransactionRepository;
 import com.deepak.proexpenditure.pro_expenditure.repository.UserRepository;
 import com.deepak.proexpenditure.pro_expenditure.repository.BankRepository;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class TotalBalanceService {
 
 
     @Transactional
-    public TotalBalanceDTO createTotalBalance(String userId, Long initialBalance) {
+    public TotalBalanceDTO createTotalBalance(String userId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
         return updateTotalBalance(user);
@@ -37,11 +38,12 @@ public class TotalBalanceService {
     @Transactional
     @EventListener
     public void handleBankCreatedEvent(BankCreatedEvent event) {
-        createTotalBalance(event.getUserId(), event.getInitialBalance());
+        createTotalBalance(event.getUserId());
     }
 
     @Transactional
-    public TotalBalanceDTO updateTotalBalance(User user) {
+    public TotalBalanceDTO
+    updateTotalBalance(User user) {
         // Get the sum of balances for all the user's banks
         Long totalBalanceAmount = bankRepository.sumBalanceByUser(user);
         totalBalanceAmount = (totalBalanceAmount != null) ? totalBalanceAmount : 0L;
@@ -56,6 +58,7 @@ public class TotalBalanceService {
             totalBalance.setTotalBalance(totalBalanceAmount);
             totalBalanceRepository.save(totalBalance);
             TotalBalance savedTotalBalance = totalBalanceRepository.save(totalBalance);
+            log.info("Updated TotalBalance for User [{}]: {}", user.getId(), totalBalanceAmount);
             return new TotalBalanceDTO(savedTotalBalance);
         } else {
             // ✅ Create new TotalBalance record only if it doesn't exist

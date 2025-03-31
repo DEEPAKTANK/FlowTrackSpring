@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface BalanceHistoryRepository extends JpaRepository<BalanceHistory, Integer> {
 
-    List<BalanceHistory> findByBank(BankDetails bank);
+    BalanceHistory findByBank(BankDetails bank);
 }

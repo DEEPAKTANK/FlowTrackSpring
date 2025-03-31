@@ -1,9 +1,14 @@
 package com.deepak.proexpenditure.pro_expenditure.controller;
 
 import com.deepak.proexpenditure.pro_expenditure.dto.BankDTO;
+import com.deepak.proexpenditure.pro_expenditure.dto.TransactionDTO;
+import com.deepak.proexpenditure.pro_expenditure.entity.Transaction;
 import com.deepak.proexpenditure.pro_expenditure.service.BankService;
+import com.deepak.proexpenditure.pro_expenditure.service.TransactionService;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +22,7 @@ import java.util.List;
 public class BankController {
 
     private final BankService bankService;
+    private final TransactionService transactionService;
 
     // ✅ Ensure logged-in user is assigned to the bank account
     @PostMapping("/createbank")
@@ -40,4 +46,19 @@ public class BankController {
         }
         return ResponseEntity.ok(bankService.getBanksByUserId(userId));
     }
+    // ✅ Ensure logged-in user is assigned to the bank account
+        @PostMapping("/transaction")
+    public ResponseEntity<?> createTransaction(@RequestBody TransactionDTO transactionDTO, Authentication authentication) {
+       try{
+           String loggedInUserId = authentication.getName(); // Get logged-in user's ID
+           log.info("loggedInUserId {}", loggedInUserId);
+           TransactionDTO createdTransaction=transactionService.createTransactionFromBank(transactionDTO) ;
+           log.info("createdTransaction {}", createdTransaction);
+           return ResponseEntity.ok(createdTransaction);
+       } catch (JwtException e) {
+           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+       }
+
+    }
+
 }

@@ -1,23 +1,19 @@
 package com.deepak.proexpenditure.pro_expenditure.service;
 
 import com.deepak.proexpenditure.pro_expenditure.dto.BankDTO;
-import com.deepak.proexpenditure.pro_expenditure.entity.BalanceHistory;
 import com.deepak.proexpenditure.pro_expenditure.entity.BankDetails;
-import com.deepak.proexpenditure.pro_expenditure.entity.TotalBalance;
+import com.deepak.proexpenditure.pro_expenditure.entity.Transaction;
 import com.deepak.proexpenditure.pro_expenditure.entity.User;
-import com.deepak.proexpenditure.pro_expenditure.enums.CurrencyType;
+import com.deepak.proexpenditure.pro_expenditure.enums.IsInitial;
+import com.deepak.proexpenditure.pro_expenditure.enums.TransactionType;
 import com.deepak.proexpenditure.pro_expenditure.events.BankCreatedEvent;
+import com.deepak.proexpenditure.pro_expenditure.events.TransactionCreatedEvent;
 import com.deepak.proexpenditure.pro_expenditure.exception.ResourceNotFoundException;
-import com.deepak.proexpenditure.pro_expenditure.exception.TotalBalanceAlreadyExistsException;
 import com.deepak.proexpenditure.pro_expenditure.exception.UnauthorizedAccessException;
 import com.deepak.proexpenditure.pro_expenditure.repository.BalanceHistoryRepository;
 import com.deepak.proexpenditure.pro_expenditure.repository.BankRepository;
-import com.deepak.proexpenditure.pro_expenditure.repository.TotalBalanceRepository;
 import com.deepak.proexpenditure.pro_expenditure.repository.UserRepository;
-import com.deepak.proexpenditure.pro_expenditure.utils.IDGenerator;
 import lombok.RequiredArgsConstructor;
-import java.util.Optional;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
@@ -25,11 +21,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.deepak.proexpenditure.pro_expenditure.enums.IsInitial.FALSE;
+import static com.deepak.proexpenditure.pro_expenditure.enums.IsInitial.TRUE;
+
 @Slf4j
 @Service
 @Transactional
@@ -40,6 +38,7 @@ public class BankService {
     private final UserRepository userRepository;
     private final BalanceHistoryRepository balanceHistoryRepository;
     private final ApplicationEventPublisher applicationEventPublisher; // ✅ Injected
+    private IsInitial isInitial=FALSE; // ✅ Injected
 
 
     // ✅ Get logged-in user ID
@@ -59,7 +58,7 @@ public class BankService {
 
         // Generate structured bank ID
         String bankId = String.format("BNK-%s-%04d", loggedInUserId, bankCount + 1);
-
+        isInitial = TRUE;
         BankDetails bankDetails = BankDetails.builder()
                 .bankName(bankDTO.getBankName())
                 .bankId(bankId)
@@ -77,19 +76,6 @@ public class BankService {
 
         // Save bank details first
         BankDetails savedBank = bankRepository.save(bankDetails);
-
-        // Create BalanceHistory entry
-//        BalanceHistory balanceHistory = BalanceHistory.builder()
-//                .previousBalance((long) 0.0)  // Set previous balance as 0 for a new account
-//                .newBalance(bankDTO.getBalance())
-//                .user(user)
-//                .bank(savedBank)  // Assign saved bank details
-//                .updatedAt(LocalDateTime.now())
-//                .updatedBy(loggedInUserId)
-//                .build();
-//
-////         Save balance history
-//        balanceHistoryRepository.save(balanceHistory);
 
 // Check if the user already has a TotalBalance entry
         applicationEventPublisher.publishEvent(new BankCreatedEvent(this, user, savedBank, bankDTO.getBalance()));
@@ -190,4 +176,27 @@ public class BankService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void updateBalance(TransactionCreatedEvent event) {
+        Transaction transaction = event.getTransaction();
+        BankDetails bankDetails = transaction.getBankDetails();
+
+        if (bankDetails == null) {
+            log.error("Bank details not found for transaction ID: {}", transaction.getTransaction_id());
+            throw new ResourceNotFoundException("Active bank not found");
+        }
+
+        if (!event.isInitial()) {
+            // Determine the amount update based on transaction type
+            Long amountChange = transaction.getTransactionType() == TransactionType.CREDIT
+                    ? transaction.getAmount()  // Increase balance for deposits
+                    : -transaction.getAmount(); // Decrease balance for withdrawals
+
+            bankDetails.setBalance(bankDetails.getBalance() + amountChange);
+            bankRepository.save(bankDetails);
+
+            log.info("✅ Updated bank balance for Bank ID: {} | New Balance: {}",
+                    bankDetails.getBankId(), bankDetails.getBalance());
+        }
+    }
 }

@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "transactions")
@@ -26,14 +27,19 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NonNull
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "bank_id", nullable = false)
+    private BankDetails bankDetails;
 
     @NonNull
     @Column(name = "amount", nullable = false)
-    private double amount;
+    private Long amount;
+    @NonNull
+    @Column(name = "transaction_id", nullable = false)
+    private String transaction_id;
+
+    @Column(name = "description")
+    private String description;
 
     @NonNull
     @Enumerated(EnumType.STRING)
