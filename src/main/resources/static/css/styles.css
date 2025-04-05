@@ -1,0 +1,645 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #00bcd4, #ff9800);
+    /* Gradient background for a fresh look */
+    color: #333;
+    position: relative;
+    z-index: 1;
+
+    animation: bodyAnimation 3s ease-out forwards;
+}
+
+@keyframes bodyAnimation {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://www.transparenttextures.com/patterns/diagonal-stripes-light.png');
+    /* Subtle texture */
+    opacity: 0.15;
+    /* Make the texture subtle */
+    z-index: -1;
+    animation: textureAnimation 10s ease-in-out forwards;
+}
+
+@keyframes textureAnimation {
+    0% {
+        opacity: 0.1;
+    }
+
+    100% {
+        opacity: 0.15;
+    }
+}
+
+h1 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Adding app icon and name to the top */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    background: rgba(0, 123, 255, 0.1);
+    /* Light background for header */
+    padding: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: headerAnimation 1.5s ease-in-out forwards;
+}
+
+@keyframes headerAnimation {
+    0% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.app-header i {
+    font-size: 40px;
+    color: #007BFF;
+    margin-right: 15px;
+}
+
+.app-header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #007BFF;
+}
+
+.container {
+    max-width: 900px;
+    /* Increased max width for more space */
+    margin: 30px auto;
+    /* More margin at top and bottom for better spacing */
+    padding: 30px 40px;
+    /* Increased padding for better internal spacing */
+    background: #ffffff;
+    /* Clean white background */
+    border-radius: 12px;
+    /* Rounded corners with slightly higher radius */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    /* Softer, more noticeable shadow for depth */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Updated font for a cleaner look */
+    line-height: 1.6;
+    /* Increased line height for better readability */
+    color: #333;
+    /* Dark text for better contrast and readability */
+
+    animation: containerAnimation 2s ease-out forwards;
+}
+
+@keyframes containerAnimation {
+    0% {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.container h1 {
+    font-size: 2rem;
+    /* Larger font size for the heading */
+    font-weight: bold;
+    margin-bottom: 20px;
+    /* More space below the heading */
+    color: #007BFF;
+    /* Add color to the heading for emphasis */
+}
+
+.container p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    /* Added margin for better separation between paragraphs */
+    color: #555;
+    /* Slightly lighter color for paragraphs */
+}
+
+.container .form-group {
+    margin-bottom: 20px;
+    /* More margin between form groups */
+}
+
+.container .form-group label {
+    display: block;
+    font-size: 1.1rem;
+    /* Slightly larger labels for better readability */
+    font-weight: 500;
+    margin-bottom: 8px;
+    /* Space between label and input */
+    color: #333;
+    /* Dark color for labels */
+}
+
+.container .form-group input,
+.container .form-group select {
+    width: 40%;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    /* Lighter border for inputs */
+    border-radius: 6px;
+    /* Rounded corners for inputs */
+    box-sizing: border-box;
+    /* Ensures padding doesn’t mess with the width */
+    margin-bottom: 12px;
+    /* Space below inputs */
+    transition: all 0.3s ease;
+    /* Smooth transition on focus */
+    animation: inputAnimation 1s ease-out forwards;
+}
+
+@keyframes inputAnimation {
+    0% {
+        transform: translateX(-10px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.container .form-group input:focus,
+.container .form-group select:focus {
+    border-color: #007BFF;
+    /* Focus color for better visibility */
+    outline: none;
+    /* Removes default focus outline */
+}
+
+.container button {
+    background-color: #007BFF;
+    /* Button color */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    /* Larger button with more padding */
+    font-size: 1rem;
+    font-weight: 600;
+    /* Bold text on the button */
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* Smooth hover effect */
+}
+
+.container button:hover {
+    background-color: #0056b3;
+    /* Darker button color on hover */
+}
+
+.container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    /* More space at the top of the table */
+}
+
+.container table th,
+.container table td {
+    padding: 12px;
+    /* Increased padding for table cells */
+    text-align: left;
+    /* Align text to the left for better readability */
+    font-size: 1rem;
+    /* Slightly larger text in the table */
+    border-bottom: 1px solid #ddd;
+    /* Lighter border for table rows */
+}
+
+.container table th {
+    background-color: #007BFF;
+    /* Table header background */
+    color: white;
+    /* White text in the header */
+    font-weight: 600;
+    /* Bolder font in the header */
+}
+
+.container .error-message {
+    color: red;
+    /* Error messages in red */
+    font-size: 0.9rem;
+    /* Slightly smaller text for error messages */
+    margin-top: 5px;
+}
+
+
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    width: 40%;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+}
+
+/* Styling for radio buttons */
+.radio-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 5px;
+    align-items: center;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+}
+
+.radio-group input[type="radio"] {
+    width: 20px;
+    height: 20px;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+table,
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    font-size: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #007BFF;
+    color: white;
+    font-weight: 600;
+}
+
+/* Container Styling */
+.summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.summary p {
+    margin: 5px 0;
+}
+
+/* Balance and credit/debit grouped side by side */
+.balance-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    background: #e9ecef;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  .balance-item {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 15px;
+  }
+
+/* Credit-Debit Section */
+.credit-debit-group {
+    display: flex;
+    justify-content: space-between;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.credit-debit-item {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+.credit-debit-item p {
+    margin: 5px 0;
+    /* Adds some spacing */
+}
+
+strong {
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .credit-debit-group {
+        flex-direction: column;
+        /* Stack items on smaller screens */
+        align-items: flex-start;
+    }
+
+    .credit-debit-item {
+        text-align: left;
+        /* Align text to left */
+        width: 100%;
+        padding: 5px 0;
+    }
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://www.transparenttextures.com/patterns/diagonal-stripes-light.png');
+    /* Subtle texture */
+    opacity: 0.2;
+    /* Make the texture subtle */
+    z-index: -1;
+}
+
+.container::after {
+    content: "";
+    position: absolute;
+    top: 20%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.svgrepo.com/show/1247/circle.svg') no-repeat center center;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+/* User Info Section */
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.user-info p {
+    font-size: 1.2em;
+    margin: 0;
+    color: #333;
+}
+
+.user-info button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.user-info button:hover {
+    background-color: #e53935;
+}
+
+/* Current Date Section */
+.current-date {
+    margin-top: 10px;
+    font-size: 1.1em;
+}
+
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+    .user-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-info p {
+        margin-bottom: 10px;
+    }
+
+    .user-info button {
+        width: 100%;
+    }
+}
+
+/* Container for balances */
+.balance-container {
+    display: flex;
+    flex-direction: column;
+    /* Align items vertically */
+    align-items: flex-start;
+    /* Align text to the left */
+    gap: 1rem;
+    /* Space between each balance item */
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f9f9f9;
+    width: 100%;
+    /* Fit the container to the parent */
+    max-width: 600px;
+    /* Optional: Limit the width */
+    margin: auto;
+    /* Center the container */
+}
+
+/* Individual balance items */
+.balance-item {
+    display: contents;
+    justify-content: space-between;
+    /* Separate label and value */
+    width: 100%;
+    /* Make each item fill the container */
+    font-size: 1rem;
+    /* Adjust font size for readability */
+    color: #333;
+    /* Text color */
+}
+
+/* Label for the balance (e.g., "Cash Balance:") */
+.balance-item strong {
+    font-weight: bolder;
+    text-transform: capitalize;
+    /* Make the label uppercase */
+}
+
+/* Value for the balance (e.g., "₹ 0.00") */
+.balance-item span {
+    color: blue;
+    font-weight: normal;
+  }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .balance-group,
+    .credit-debit-group {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .balance-item,
+    .credit-debit-item {
+      width: 100%;
+      text-align: left;
+    }
+  }
+.total-balance-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #dff0d8;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #155724;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  /* General styling for the table */
+#transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* Styling for table headers */
+#transaction-table th {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* Styling for table rows */
+#transaction-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 13px;
+}
+
+/* Alternate row coloring for better readability */
+#transaction-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+  text-align: left;
+}
+
+/* Hover effect for rows */
+#transaction-table tr:hover {
+  background-color: #f1f1f1;
+  text-align: left;
+}
+
+/* Empty row with no transactions styling */
+#transaction-table td[colspan="5"] {
+  text-align: left;
+  font-style: italic;
+  color: #999;
+}
+
+/* Styling for transaction amount column */
+#transaction-table td:nth-child(5) {
+  text-align: left;
+  font-weight: bold;
+}
+
+/* Styling for date column */
+#transaction-table td:nth-child(1) {
+  text-align: left;
+  color: #888;
+}
+
+/* Style for Debit transaction amounts in red */
+#transaction-table td.debit {
+  color: red;
+  text-align: left;
+}
+
+/* Style for Credit transaction amounts in green */
+#transaction-table td.credit {
+  color: #4CAF50;
+  text-align: left;
+}
+
+/* Optional responsive design for small screens */
+@media (max-width: 768px) {
+  #transaction-table {
+    font-size: 12px;
+  }
+
+  #transaction-table td, #transaction-table th {
+    padding: 8px;
+  }
+}
