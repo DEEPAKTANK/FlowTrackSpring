@@ -6,6 +6,7 @@ import com.deepak.proexpenditure.pro_expenditure.entity.User;
 import com.deepak.proexpenditure.pro_expenditure.entity.UserAuth;
 import com.deepak.proexpenditure.pro_expenditure.enums.UserRole;
 import com.deepak.proexpenditure.pro_expenditure.enums.UserStatus;
+import com.deepak.proexpenditure.pro_expenditure.exception.UserAlreadyExistsException;
 import com.deepak.proexpenditure.pro_expenditure.repository.UserRepository;
 import com.deepak.proexpenditure.pro_expenditure.repository.UserAuthRepository; // ✅ FIXED IMPORT
 import lombok.RequiredArgsConstructor;
@@ -94,6 +95,10 @@ public class UserService {
     @Transactional
     public UserDTO registerUser(RegisterUserRequest request) {
         User user = new User();
+        Optional<User> existingUser = userRepository.findByUserId(request.getUser_name());
+        if (existingUser.isPresent()) {
+            throw new UserAlreadyExistsException("Username already exists");
+        }
         user.setName(request.getName());
         user.setUser_name(request.getUser_name());
         user.setRole(UserRole.USER);

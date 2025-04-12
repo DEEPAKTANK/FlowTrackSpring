@@ -48,6 +48,7 @@ public interface BankRepository extends JpaRepository<BankDetails, String> {
      */
     @Query("SELECT b.balance FROM BankDetails b WHERE b.bankId = :bankId")
     Optional<Long> findInitialBalanceByBankId(@Param("bankId") String bankId);
-    @Query("UPDATE BankDetails b SET b.balance = b.balance + :amount WHERE b.bankId = :bankId")
-    void updateBalance(String bankId, Long amount);
+    @Query("SELECT b FROM BankDetails b WHERE b.bankId IN :bankIds")
+    List<BankDetails> findAllByBankIds(@Param("bankIds") List<String> bankIds);
+
 }

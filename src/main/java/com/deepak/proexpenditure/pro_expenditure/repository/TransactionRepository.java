@@ -36,4 +36,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 //            "FROM Transaction t WHERE t.bankDetails.bankId = :bankId " +
 //            "ORDER BY t.transaction_id DESC LIMIT 1")
 //    Optional<TransactionDTO> findLatestTransactionByBankId(@Param("bankId") String bankId);
+List<Transaction> findAllByBankDetails_BankIdInOrderByTransactionDateDesc(List<String> bankIds);
+
 }

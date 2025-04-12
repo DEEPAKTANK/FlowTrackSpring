@@ -1,9 +1,6 @@
 package com.deepak.proexpenditure.pro_expenditure.service;
 
-import com.deepak.proexpenditure.pro_expenditure.dto.AddEmailRequest;
-import com.deepak.proexpenditure.pro_expenditure.dto.AddPhoneRequest;
-import com.deepak.proexpenditure.pro_expenditure.dto.CreatePasswordRequest;
-import com.deepak.proexpenditure.pro_expenditure.dto.LoginRequest;
+import com.deepak.proexpenditure.pro_expenditure.dto.*;
 import com.deepak.proexpenditure.pro_expenditure.entity.*;
 import com.deepak.proexpenditure.pro_expenditure.exception.EmailAlreadyExistsException;
 import com.deepak.proexpenditure.pro_expenditure.exception.PhoneAlreadyExistsException;
@@ -20,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -80,7 +80,7 @@ public class AuthService {
     /**
      * Authenticate user by Email, Phone, or User ID.
      */
-    public String authenticate(LoginRequest request) {
+    public Map<String, String> authenticate(LoginRequest request) {
         Optional<User> optionalUser;
 
         // ✅ Identify Login Type (Email, Phone, User ID)
@@ -111,11 +111,14 @@ public class AuthService {
             log.warn("Invalid password attempt for user: {}", user.getUserId());
             throw new BadCredentialsException("Invalid password");
         }
-
         // ✅ Generate & Return JWT Token
         String token = jwtProvider.generateToken(user.getUserId());
         log.info("User {} logged in successfully. JWT issued.", user.getUserId());
-        return token;
+        Map<String, String> response = new HashMap<>();
+        response.put("token",token);
+        response.put("User",user.getUser_name());
+        response.put("User",user.getUserId());
+        return response;
     }
 
     public void addEmail(AddEmailRequest request) {
@@ -165,4 +168,38 @@ public class AuthService {
                 .build();
         userPhoneRepository.save(userPhone);
     }
+    @Transactional
+    public void forgotPassword(ForgotPasswordRequest request) {
+        // ✅ Validate input
+        if (request.getUserName() == null || (request.getPhone() == null && request.getEmail() == null)) {
+            throw new IllegalArgumentException("Username and either phone or email must be provided");
+        }
+
+        // ✅ Find user by username
+        User user = userRepository.findByUserId(request.getUserName())
+                .orElseThrow(() -> {
+                    log.warn("Forgot password: User not found - {}", request.getUserName());
+                    return new UsernameNotFoundException("User not found");
+                });
+
+        // ✅ Check either phone or email matches
+        boolean match = false;
+        List<UserPhone> phoneNumbers = userPhoneRepository.findByUser_UserId(user.getUserId());
+
+        for (UserPhone phone : phoneNumbers) {
+            if (request.getPhone() != null && request.getPhone().equals(phone.getPhone())) {
+                match = true;
+                break;
+            }
+        }
+
+        if (!match) {
+            log.warn("Forgot password: Email or phone mismatch for user {}", request.getUserName());
+            throw new IllegalArgumentException("Provided email or phone does not match our records.");
+        }
+
+        // ✅ Proceed to reset flow - e.g., send OTP or temporary token (to be implemented)
+        log.info("Forgot password initiated for user: {}", user.getUserId());
+    }
+
 }

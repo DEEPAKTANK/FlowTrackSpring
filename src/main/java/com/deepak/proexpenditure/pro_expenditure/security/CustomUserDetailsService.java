@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
         Optional<User> optionalUser;
 
-        if (identifier.contains("@")) { // ✅ Login via Email
+        if (identifier.contains(".com")) { // ✅ Login via Email
             UserEmail userEmail = userEmailRepository.findByEmail(identifier)
                     .orElseThrow(() -> new UsernameNotFoundException("Email not found: " + identifier));
             optionalUser = Optional.of(userEmail.getUser());

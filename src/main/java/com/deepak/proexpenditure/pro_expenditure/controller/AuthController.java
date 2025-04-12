@@ -1,9 +1,6 @@
 package com.deepak.proexpenditure.pro_expenditure.controller;
 
-import com.deepak.proexpenditure.pro_expenditure.dto.AddEmailRequest;
-import com.deepak.proexpenditure.pro_expenditure.dto.AddPhoneRequest;
-import com.deepak.proexpenditure.pro_expenditure.dto.CreatePasswordRequest;
-import com.deepak.proexpenditure.pro_expenditure.dto.LoginRequest;
+import com.deepak.proexpenditure.pro_expenditure.dto.*;
 import com.deepak.proexpenditure.pro_expenditure.exception.AuthenticationException;
 import com.deepak.proexpenditure.pro_expenditure.exception.EmailAlreadyExistsException;
 import com.deepak.proexpenditure.pro_expenditure.exception.PhoneAlreadyExistsException;
@@ -37,10 +34,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            String token = authService.authenticate(request);
-
             Map<String, String> response = new HashMap<>();
-            response.put("token", token);
+            response=authService.authenticate(request);
             return ResponseEntity.ok(response);
 
         } catch (AuthenticationException e) {
@@ -74,5 +69,10 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
         }
+    }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        authService.forgotPassword(request);
+        return ResponseEntity.ok(Map.of("message", "Password reset verification initiated."));
     }
 }

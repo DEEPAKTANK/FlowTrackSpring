@@ -2,6 +2,7 @@ package com.deepak.proexpenditure.pro_expenditure.entity;
 
 import com.deepak.proexpenditure.pro_expenditure.enums.TransactionType;
 import com.deepak.proexpenditure.pro_expenditure.enums.TransactionStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,7 +27,7 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "bank_id", nullable = false)
     private BankDetails bankDetails;
